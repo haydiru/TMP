@@ -16,9 +16,10 @@ class SignupForm extends Model
     public $nama_tengah;
     public $nama_belakang;
     public $tg_lahir;
-    public $negara;
-    public $provinsi;
-    public $kabupaten;
+    public $id_negara;
+    public $id_provinsi;
+    public $id_kabupaten;
+    public $id_sex;
 
     /**
      * @inheritdoc
@@ -43,13 +44,37 @@ class SignupForm extends Model
 			[['tg_lahir'], 'safe'],
             //[['id_scan'], 'string'],
             [['nama_depan', 'nama_tengah', 'nama_belakang'], 'string', 'max' => 64],
-           [['id_negara', 'id_prov', 'id_kab', 'id_kec'], 'string', 'max' => 11],
+           [['id_negara', 'id_provinsi', 'id_kabupaten'], 'string', 'max' => 11],
 
           
         ];
     }
 	
-
+	    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'nama_depan' => 'Nama Depan',
+            'nama_tengah' => 'Nama Tengah',
+            'nama_belakang' => 'Nama Belakang',
+            'tg_lahir' => 'Tanggal Lahir',
+            'id_sex' => 'Jenis Kelamin',
+            'id_negara' => 'Negara',
+            'id_provinsi' => 'Provinsi',
+            'id_kabupaten' => 'Kabupaten',
+            'id_kecamatan' => 'Kecamatan',
+            'id_scan' => 'Id Scan',
+            'auth_key' => 'Auth Key',
+            'email' => 'Email',
+            'password_hash' => 'Password Hash',
+            'password_reset_token' => 'Password Reset Token',
+            'id_status' => 'Id Status',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+        ];
+    }
 
     /**
      * Signs user up.
@@ -65,6 +90,14 @@ class SignupForm extends Model
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
+        $user->nama_depan = $this->nama_depan;
+        $user->nama_tengah = $this->nama_tengah;
+        $user->nama_belakang = $this->nama_belakang;
+        $user->tg_lahir = $this->tg_lahir;
+        $user->id_sex = $this->id_sex;
+        $user->id_negara = $this->id_negara;
+        $user->id_prov = $this->id_provinsi;
+        $user->id_kab = $this->id_kabupaten;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         

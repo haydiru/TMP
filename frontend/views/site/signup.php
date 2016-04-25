@@ -32,21 +32,21 @@ $negaras = ArrayHelper::map($negara,'id','nama');
 				<?= $form->field($model, 'nama_depan') ?>
 				<?= $form->field($model, 'nama_tengah') ?>
 				<?= $form->field($model, 'nama_belakang') ?>
+				<?= $form->field($model, 'id_sex') ?>
 				<?= $form->field($model, 'tg_lahir')->widget(
 				DatePicker::className(),[
             'inline' => false,
             'clientOptions' => [
                 'autoclose' => true,
-                'format' => 'd-m-yyyy'
+                'format' => 'yyyy-m-d'
             ]
         ]
     ) ?>
 	
-				<?= $form->field($model, 'negara')->dropDownList($negaras,['prompt'=>'-Pilih Negara-'])?>
-				<?= $form->field($model, 'provinsi')->dropDownList([],['prompt'=>'-Pilih Provinsi-'])?>
-				<?= $form->field($model, 'kabupaten')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
-				<?= $form->field($model, 'nama_belakang') ?>
-				<?= $form->field($model, 'nama_belakang') ?>
+				<?= $form->field($model, 'id_negara')->dropDownList($negaras,['prompt'=>'-Pilih Negara-'])?>
+				<?= $form->field($model, 'id_provinsi')->dropDownList([],['prompt'=>'-Pilih Provinsi-'])?>
+				<?= $form->field($model, 'id_kabupaten')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
+				
 
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
@@ -58,24 +58,24 @@ $negaras = ArrayHelper::map($negara,'id','nama');
 </div>
 <?php
 $this->registerJs('
-$("#signupform-provinsi").attr("disabled",true);
-$("#signupform-kabupaten").attr("disabled",true);
-$("#signupform-negara").change(function(){
+$("#signupform-id_provinsi").attr("disabled",true);
+$("#signupform-id_kabupaten").attr("disabled",true);
+$("#signupform-id_negara").change(function(){
 	$.get("'.Url::to(['get-provinsi','negara_id'=>'']).'"+$(this).val(), function(data)
-	{select = $("#signupform-provinsi")
+	{select = $("#signupform-id_provinsi")
 	select.empty();
 	var options="<option value=\'\'>-Pilih Provinsi-</option>";
 	$.each(data.provinsi, function(key,value){
 		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
 	});
 	select.append(options);
-	$("#signupform-provinsi").attr("disabled",false);
+	$("#signupform-id_provinsi").attr("disabled",false);
 	});
 });
 
-$("#signupform-provinsi").change(function(){	console.log($(this).val());
+$("#signupform-id_provinsi").change(function(){	console.log($(this).val());
 	$.get("'.Url::to(['get-kabupaten','provinsi_id'=>'']).'"+$(this).val(), function(data)
-	{select = $("#signupform-kabupaten")
+	{select = $("#signupform-id_kabupaten")
 	select.empty();
 
 	var options="<option value=\'\'>-Pilih Kabupaten-</option>";
@@ -83,7 +83,7 @@ $("#signupform-provinsi").change(function(){	console.log($(this).val());
 		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
 	});
 	select.append(options);
-	$("#signupform-kabupaten").attr("disabled",false);
+	$("#signupform-id_kabupaten").attr("disabled",false);
 	});
 });
 
