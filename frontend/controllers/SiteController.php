@@ -159,10 +159,7 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
-			'prov' => $this->getProvinsi(),
 			'negara' => $this->getNegara(),
-			'kab' => $this->getKab(),
-			'kec' => $this->getKec(),
         ]);
     }
 	  public function getNegara()
@@ -173,23 +170,31 @@ class SiteController extends Controller
 				->orderBy(['nama'=>SORT_DESC])
 				->all(\yii::$app->db);
     } 
-    public function getProvinsi()
+    public function actionGetProvinsi($negara_id)
     {
-        return (new \yii\db\Query())
+        $provi = (new \yii\db\Query())
 				->select('*')
 				->from('provinsi')
-				->orderBy(['nama'=>SORT_DESC])
+				->where(['id_negara'=>$negara_id])
+				->orderBy(['nama'=>SORT_DESC,])
 				->all(\yii::$app->db);
-    }    
-	
-	public function getKab()
-    {
-        return (new \yii\db\Query())
+		\Yii::$app->response->format=\yii\web\Response::FORMAT_JSON;
+		return ['provinsi'=>$provi,];
+				
+    }
+	public function actionGetKabupaten($provinsi_id)
+    {	
+        $kab = (new \yii\db\Query())
 				->select('*')
 				->from('kabupaten')
-				->orderBy(['nama'=>SORT_DESC])
+				->where(['id_provinsi'=>$provinsi_id])
+				->orderBy(['nama'=>SORT_DESC,])
 				->all(\yii::$app->db);
+		\Yii::$app->response->format=\yii\web\Response::FORMAT_JSON;
+		return ['kabupaten'=>$kab,];
+				
     }    
+	   
 	public function getKec()
     {
         return (new \yii\db\Query())

@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/* @var $model \frontend\models\#signupform */
 
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
@@ -13,8 +13,6 @@ use dosamigos\datepicker\DatePicker;
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
-$provs = ArrayHelper::map($prov,'id','nama');
-$kabs = ArrayHelper::map($kab,'id','nama');
 $negaras = ArrayHelper::map($negara,'id','nama');
 
 
@@ -45,8 +43,8 @@ $negaras = ArrayHelper::map($negara,'id','nama');
     ) ?>
 	
 				<?= $form->field($model, 'negara')->dropDownList($negaras,['prompt'=>'-Pilih Negara-'])?>
-				<?= $form->field($model, 'provinsi')->dropDownList($provs,['prompt'=>'-Pilih Negara-'])?>
-				<?= $form->field($model, 'kabupaten')->dropDownList($kabs,['prompt'=>'-Pilih Negara-'])?>
+				<?= $form->field($model, 'provinsi')->dropDownList([],['prompt'=>'-Pilih Provinsi-'])?>
+				<?= $form->field($model, 'kabupaten')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
 				<?= $form->field($model, 'nama_belakang') ?>
 				<?= $form->field($model, 'nama_belakang') ?>
 
@@ -58,3 +56,36 @@ $negaras = ArrayHelper::map($negara,'id','nama');
         </div>
     </div>
 </div>
+<?php
+$this->registerJs('
+$("#signupform-provinsi").attr("disabled",true);
+$("#signupform-kabupaten").attr("disabled",true);
+$("#signupform-negara").change(function(){
+	$.get("'.Url::to(['get-provinsi','negara_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#signupform-provinsi")
+	select.empty();
+	var options="<option value=\'\'>-Pilih Provinsi-</option>";
+	$.each(data.provinsi, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#signupform-provinsi").attr("disabled",false);
+	});
+});
+
+$("#signupform-provinsi").change(function(){	console.log($(this).val());
+	$.get("'.Url::to(['get-kabupaten','provinsi_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#signupform-kabupaten")
+	select.empty();
+
+	var options="<option value=\'\'>-Pilih Kabupaten-</option>";
+	$.each(data.kabupaten, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#signupform-kabupaten").attr("disabled",false);
+	});
+});
+
+');
+?>
