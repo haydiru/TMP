@@ -5,12 +5,19 @@
 /* @var $model \frontend\models\SignupForm */
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use dosamigos\datepicker\DatePicker;
 
 
 $this->title = 'Signup';
 $this->params['breadcrumbs'][] = $this->title;
+$provs = ArrayHelper::map($prov,'id','nama');
+$kabs = ArrayHelper::map($kab,'id','nama');
+$negaras = ArrayHelper::map($negara,'id','nama');
+
+
 ?>
 
 <div class="site-signup">
@@ -36,9 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ]
         ]
     ) ?>
-				<?= $form->field($model, 'negara')->dropDownList(['id'=>1],['prompt'=>'-Pilih Negara-'])?>
-				<?= $form->field($model, 'nama_belakang') ?>
-				<?= $form->field($model, 'nama_belakang') ?>
+	
+				<?= $form->field($model, 'negara')->dropDownList($negaras,['prompt'=>'-Pilih Negara-'])?>
+				<?= $form->field($model, 'provinsi')->dropDownList($provs,['prompt'=>'-Pilih Negara-'])?>
+				<?= $form->field($model, 'kabupaten')->dropDownList($kabs,['prompt'=>'-Pilih Negara-'])?>
 				<?= $form->field($model, 'nama_belakang') ?>
 				<?= $form->field($model, 'nama_belakang') ?>
 

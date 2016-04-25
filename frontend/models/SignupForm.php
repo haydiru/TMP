@@ -17,6 +17,8 @@ class SignupForm extends Model
     public $nama_belakang;
     public $tg_lahir;
     public $negara;
+    public $provinsi;
+    public $kabupaten;
 
     /**
      * @inheritdoc
@@ -41,7 +43,7 @@ class SignupForm extends Model
 			[['tg_lahir'], 'safe'],
             //[['id_scan'], 'string'],
             [['nama_depan', 'nama_tengah', 'nama_belakang'], 'string', 'max' => 64],
-           // [['id_negara', 'id_prov', 'id_kab', 'id_kec'], 'string', 'max' => 11],
+           [['id_negara', 'id_prov', 'id_kab', 'id_kec'], 'string', 'max' => 11],
 
           
         ];

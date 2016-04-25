@@ -159,7 +159,44 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+			'prov' => $this->getProvinsi(),
+			'negara' => $this->getNegara(),
+			'kab' => $this->getKab(),
+			'kec' => $this->getKec(),
         ]);
+    }
+	  public function getNegara()
+    {
+        return (new \yii\db\Query())
+				->select('*')
+				->from('negara')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
+    } 
+    public function getProvinsi()
+    {
+        return (new \yii\db\Query())
+				->select('*')
+				->from('provinsi')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
+    }    
+	
+	public function getKab()
+    {
+        return (new \yii\db\Query())
+				->select('*')
+				->from('kabupaten')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
+    }    
+	public function getKec()
+    {
+        return (new \yii\db\Query())
+				->select('*')
+				->from('kecamatan')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
     }
 
     /**
