@@ -20,7 +20,9 @@ class SignupForm extends Model
     public $id_provinsi;
     public $id_kabupaten;
     public $id_sex;
-
+    public $term;
+	public $verifyCode;
+	
     /**
      * @inheritdoc
      */
@@ -31,7 +33,7 @@ class SignupForm extends Model
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
+			['term', 'required','requiredValue' =>1, 'message' => 'Read Term and Condition'],
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -45,6 +47,8 @@ class SignupForm extends Model
             //[['id_scan'], 'string'],
             [['nama_depan', 'nama_tengah', 'nama_belakang'], 'string', 'max' => 64],
            [['id_negara', 'id_provinsi', 'id_kabupaten'], 'string', 'max' => 11],
+           [['id_negara', 'id_provinsi', 'id_kabupaten'],  'required'],
+		   ['verifyCode', 'captcha'],
 
           
         ];
@@ -70,9 +74,11 @@ class SignupForm extends Model
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'id_status' => 'Id Status',
+            'term' => 'Term and Condition',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+			'verifyCode' => 'Verification Code',
         ];
     }
 

@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
 use dosamigos\datepicker\DatePicker;
 
 
@@ -32,7 +33,8 @@ $negaras = ArrayHelper::map($negara,'id','nama');
 				<?= $form->field($model, 'nama_depan') ?>
 				<?= $form->field($model, 'nama_tengah') ?>
 				<?= $form->field($model, 'nama_belakang') ?>
-				<?= $form->field($model, 'id_sex') ?>
+				<?= $form->field($model, 'id_sex')->radioList(array('1'=>'Pria','2'=>'Wanita')); ?>
+
 				<?= $form->field($model, 'tg_lahir')->widget(
 				DatePicker::className(),[
             'inline' => false,
@@ -46,7 +48,10 @@ $negaras = ArrayHelper::map($negara,'id','nama');
 				<?= $form->field($model, 'id_negara')->dropDownList($negaras,['prompt'=>'-Pilih Negara-'])?>
 				<?= $form->field($model, 'id_provinsi')->dropDownList([],['prompt'=>'-Pilih Provinsi-'])?>
 				<?= $form->field($model, 'id_kabupaten')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
-				
+				<?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
+                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
+                ]) ?>
+				<?= $form->field($model, 'term')->checkbox(); ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
@@ -87,5 +92,11 @@ $("#signupform-id_provinsi").change(function(){	console.log($(this).val());
 	});
 });
 
+$("button[name=signup-button]").attr("disabled",true);
+$("#signupform-term").change(function() {
+    if(this.checked) {
+        $("button[name=signup-button]").attr("disabled",false);
+    }
+});
 ');
 ?>
