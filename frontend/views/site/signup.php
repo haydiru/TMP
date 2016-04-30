@@ -97,6 +97,7 @@ $("#signupform-term").change(function() {
     if(this.checked) {
         $("button[name=signup-button]").attr("disabled",false);
     }
+	else $("button[name=signup-button]").attr("disabled",true);
 });
 ');
 ?>

@@ -8,6 +8,7 @@ use frontend\models\TravelerPostingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * TravelerPostingController implements the CRUD actions for TravelerPosting model.
@@ -19,7 +20,23 @@ class TravelerPostingController extends Controller
      */
     public function behaviors()
     {
-        return [
+        return [            
+				'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'signup'],
+                'rules' => [
+                    [
+                        'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'actions' => ['create'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -64,7 +81,9 @@ class TravelerPostingController extends Controller
     public function actionCreate()
     {
         $model = new TravelerPosting();
-
+		$identity = Yii::$app->user->identity;
+		$model->id_user = $identity->id;
+		$model->create_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
