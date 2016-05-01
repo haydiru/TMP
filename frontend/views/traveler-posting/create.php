@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\TravelerPosting */
@@ -9,15 +9,17 @@ use yii\helpers\Html;
 $this->title = 'Create Traveler Posting';
 $this->params['breadcrumbs'][] = ['label' => 'Traveler Postings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$negara = ArrayHelper::map($negara,'id','nama');
 ?>
 <div class="traveler-posting-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <div class="row">
-        <div class="col-lg-5">
+ 
+        
     <?= $this->render('_form', [
         'model' => $model,
+        'negara' => $negara,
     ]) ?>
-</div>
-</div>
+
+
 </div>

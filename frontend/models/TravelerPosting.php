@@ -121,6 +121,7 @@ class TravelerPosting extends \yii\db\ActiveRecord
             'contact_email' => 'Contact Email',
             'id_payment' => 'Id Payment',
             'id_status_pos' => 'Id Status Pos',
+            'keterangan' => 'Keterangan',
             'create_at' => 'Create At',
             'update_at' => 'Update At',
         ];
