@@ -68,4 +68,49 @@ public function actionSignupService($username,$email,$password,$nama_depan,$nama
         }
 		return $response;
     }
+	
+		  public function actionNegara()
+    {
+		\Yii::$app->response->format=\yii\web\Response::FORMAT_JSON;
+         $negara=(new \yii\db\Query())
+				->select('*')
+				->from('negara')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
+		return	['negara'=>$negara,];	
+    } 
+    public function actionProv($negara_id)
+    {
+        $provi = (new \yii\db\Query())
+				->select('*')
+				->from('provinsi')
+				->where(['id_negara'=>$negara_id])
+				->orderBy(['nama'=>SORT_DESC,])
+				->all(\yii::$app->db);
+		\Yii::$app->response->format=\yii\web\Response::FORMAT_JSON;
+		return ['provinsi'=>$provi,];
+				
+    }
+	public function actionKab($provinsi_id)
+    {	
+        $kab = (new \yii\db\Query())
+				->select('*')
+				->from('kabupaten')
+				->where(['id_provinsi'=>$provinsi_id])
+				->orderBy(['nama'=>SORT_DESC,])
+				->all(\yii::$app->db);
+		\Yii::$app->response->format=\yii\web\Response::FORMAT_JSON;
+		return ['kabupaten'=>$kab,];
+				
+    }    
+	   
+	public function actionKec()
+    {
+        return (new \yii\db\Query())
+				->select('*')
+				->from('kecamatan')
+				->orderBy(['nama'=>SORT_DESC])
+				->all(\yii::$app->db);
+    }
+
 }

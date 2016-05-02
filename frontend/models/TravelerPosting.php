@@ -110,7 +110,7 @@ class TravelerPosting extends \yii\db\ActiveRecord
             'day_arrival' => 'Day Arrival',
             'id_barang' => 'Id Barang',
             'harga' => 'Harga',
-            'id_basis_harga' => 'Id Basis Harga',
+            'id_basis_harga' => 'Basis Harga',
             'weight_price' => 'Weight Price',
             'volume_price' => 'Volume Price',
             'person_price' => 'Person Price',

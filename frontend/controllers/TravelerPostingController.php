@@ -85,19 +85,12 @@ class TravelerPostingController extends Controller
 		$model->id_user = $identity->id;
 		$model->create_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
 		$model->update_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
-		
-		$negara = (new \yii\db\Query())
-				->select('*')
-				->from('negara')
-				->orderBy(['nama'=>SORT_DESC])
-				->all(\yii::$app->db);
 				
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
-				'negara' => $negara ,
             ]);
         }
     }

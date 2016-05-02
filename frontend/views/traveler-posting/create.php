@@ -9,7 +9,6 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Create Traveler Posting';
 $this->params['breadcrumbs'][] = ['label' => 'Traveler Postings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$negara = ArrayHelper::map($negara,'id','nama');
 ?>
 <div class="traveler-posting-create">
 
@@ -18,7 +17,6 @@ $negara = ArrayHelper::map($negara,'id','nama');
         
     <?= $this->render('_form', [
         'model' => $model,
-        'negara' => $negara,
     ]) ?>
 
 
