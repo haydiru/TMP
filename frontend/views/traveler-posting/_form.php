@@ -65,21 +65,17 @@ $basisharga = ArrayHelper::map($basisharga,'id','nama');
 </div></div>
 	   <div class="row">
 <div class="col-md-3">
-    <?= $form->field($model, 'id_barang')->textInput() ?>
+    <?= $form->field($model, 'id_barang')->widget(\kartik\typeahead\TypeaheadBasic::classname(), [
+    'data' => ['sad','asa'],
+    'pluginOptions' => ['highlight' => true],
+    'options' => ['placeholder' => 'Filter as you type ...'],
+]) ?>
 </div><div class="col-md-3">
 <?= $form->field($model, 'id_basis_harga')->dropDownList($basisharga,['prompt'=>'-Pilih Basis Harga-'])?>
 </div><div class="col-md-3">
    <?= $form->field($model, 'harga')->textInput() ?>
 	</div></div>
 <?= $form->field($model, 'keterangan')->textArea(['rows' => '6']) ?>
-
-    <?= $form->field($model, 'weight_price')->textInput() ?>
-
-    <?= $form->field($model, 'volume_price')->textInput() ?>
-
-    <?= $form->field($model, 'person_price')->textInput() ?>
-
-    <?= $form->field($model, 'other_price')->textInput() ?>
 	   <div class="row">
 <div class="col-md-3">
     <?= $form->field($model, 'contact_phone')->textInput() ?>
