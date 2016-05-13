@@ -84,9 +84,22 @@ class TravelerPostingController extends Controller
 		$identity = Yii::$app->user->identity;
 		$model->id_user = $identity->id;
 		$model->create_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
-		$model->update_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
 				
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+		$barang = \frontend\models\TypeBarang::find()->where(['nama' => $_POST['TravelerPosting']['barang']])->one();
+		if($barang==null){
+		$barang = new \frontend\models\TypeBarang();
+		$barang->nama = $_POST['TravelerPosting']['barang'];
+		$barang->save();
+		}
+		$model->id_status_pos = 1;
+		$model->save();
+		$barangList = new \frontend\models\Barang();
+		$barangList->id_type_barang = $barang->id;
+		$barangList->id_traveler_posting = $model->id;
+		$barangList->save();
+		$model->id_barang = $barangList->id;
+		$model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -104,7 +117,7 @@ class TravelerPostingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+		$model->update_at = Yii::$app->formatter->asTimestamp(date('Y-d-m h:i:s'));
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

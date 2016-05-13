@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 use dosamigos\datepicker\DatePicker;
 use dosamigos\datepicker\DateRangePicker;
 use yii\helpers\ArrayHelper;
@@ -14,6 +15,8 @@ $payment = \frontend\models\Payment::find()->all();
 $payment = ArrayHelper::map($payment,'id','nama');
 $basisharga = \frontend\models\BasisHarga::find()->all();
 $basisharga = ArrayHelper::map($basisharga,'id','nama');
+$namaBarang = \frontend\models\TypeBarang::find()->orderBy('nama')->all();
+$namaBarang = ArrayHelper::map($namaBarang,'id','nama');
 
 
 ?>
@@ -32,7 +35,6 @@ $basisharga = ArrayHelper::map($basisharga,'id','nama');
 				<?= $form->field($model, 'id_kab_asal')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
 </div>
 <div class="col-md-3">
-    <?= $form->field($model, 'id_kec_asal')->textInput(['maxlength' => true]) ?>
 </div>
    </div>
    
@@ -47,7 +49,6 @@ $basisharga = ArrayHelper::map($basisharga,'id','nama');
 				<?= $form->field($model, 'id_kab_destinasi')->dropDownList([],['prompt'=>'-Pilih Kabupaten-'])?>
 </div>
 <div class="col-md-3">
-    <?= $form->field($model, 'id_kec_destinasi')->textInput(['maxlength' => true]) ?>
 </div>
    </div>
 
@@ -65,8 +66,8 @@ $basisharga = ArrayHelper::map($basisharga,'id','nama');
 </div></div>
 	   <div class="row">
 <div class="col-md-3">
-    <?= $form->field($model, 'id_barang')->widget(\kartik\typeahead\TypeaheadBasic::classname(), [
-    'data' => ['sad','asa'],
+    <?= $form->field($model, 'barang')->widget(\kartik\typeahead\TypeaheadBasic::classname(), [
+    'data' => $namaBarang,
     'pluginOptions' => ['highlight' => true],
     'options' => ['placeholder' => 'Filter as you type ...'],
 ]) ?>
@@ -95,3 +96,63 @@ $basisharga = ArrayHelper::map($basisharga,'id','nama');
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$this->registerJs('
+$("#travelerposting-id_prov_asal").attr("disabled",true);
+$("#travelerposting-id_prov_destinasi").attr("disabled",true);
+$("#travelerposting-id_kab_asal").attr("disabled",true);
+$("#travelerposting-id_kab_destinasi").attr("disabled",true);
+$("#travelerposting-id_negara_asal").change(function(){
+	$.get("'.Url::to(['site/get-provinsi','negara_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#travelerposting-id_prov_asal")
+	select.empty();
+	var options="<option value=\'\'>-Pilih Provinsi-</option>";
+	$.each(data.provinsi, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#travelerposting-id_prov_asal").attr("disabled",false);
+	});
+});
+
+$("#travelerposting-id_negara_destinasi").change(function(){
+	$.get("'.Url::to(['site/get-provinsi','negara_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#travelerposting-id_prov_destinasi")
+	select.empty();
+	var options="<option value=\'\'>-Pilih Provinsi-</option>";
+	$.each(data.provinsi, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#travelerposting-id_prov_destinasi").attr("disabled",false);
+	});
+});
+
+
+$("#travelerposting-id_prov_asal").change(function(){
+	$.get("'.Url::to(['site/get-kabupaten','provinsi_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#travelerposting-id_kab_asal")
+	select.empty();
+	var options="<option value=\'\'>-Pilih Kabupaten-</option>";
+	$.each(data.kabupaten, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#travelerposting-id_kab_asal").attr("disabled",false);
+	});
+});
+
+$("#travelerposting-id_prov_destinasi").change(function(){
+	$.get("'.Url::to(['site/get-kabupaten','provinsi_id'=>'']).'"+$(this).val(), function(data)
+	{select = $("#travelerposting-id_kab_destinasi")
+	select.empty();
+	var options="<option value=\'\'>-Pilih Kabupaten-</option>";
+	$.each(data.kabupaten, function(key,value){
+		options += "<option value=\'"+value.id+"\'>"+value.nama+"</option>";
+	});
+	select.append(options);
+	$("#travelerposting-id_kab_destinasi").attr("disabled",false);
+	});
+});
+');
+?>

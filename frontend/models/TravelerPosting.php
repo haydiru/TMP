@@ -61,18 +61,18 @@ class TravelerPosting extends \yii\db\ActiveRecord
     {
         return 'traveler_posting';
     }
-
+public $barang;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id_user', 'id_negara_asal', 'id_prov_asal', 'id_kab_asal', 'id_kec_asal', 'id_negara_destinasi', 'id_prov_destinasi', 'id_kab_destinasi', 'id_kec_destinasi', 'id_travel_frek', 'day_departure', 'day_arrival', 'id_basis_harga', 'id_status_pos'], 'required'],
+            [['id_user', 'id_negara_asal', 'id_prov_asal', 'id_kab_asal', 'id_negara_destinasi', 'id_prov_destinasi', 'id_kab_destinasi','id_travel_frek', 'day_departure', 'day_arrival', 'id_basis_harga', 'id_status_pos','barang'], 'required'],
             [['id_user', 'id_travel_frek', 'id_barang', 'harga', 'id_basis_harga', 'weight_price', 'volume_price', 'person_price', 'other_price', 'contact_phone', 'contact_wa', 'id_payment', 'id_status_pos', 'create_at', 'update_at'], 'integer'],
             [['day_departure', 'day_arrival'], 'safe'],
             [['id_negara_asal', 'id_prov_asal', 'id_kab_asal', 'id_kec_asal', 'id_negara_destinasi', 'id_prov_destinasi', 'id_kab_destinasi', 'id_kec_destinasi'], 'string', 'max' => 11],
-            [['contact_bb', 'contact_email'], 'string', 'max' => 64],
+            [['contact_bb', 'contact_email','barang'], 'string', 'max' => 64],
             [['id_barang'], 'exist', 'skipOnError' => true, 'targetClass' => Barang::className(), 'targetAttribute' => ['id_barang' => 'id']],
             [['id_basis_harga'], 'exist', 'skipOnError' => true, 'targetClass' => BasisHarga::className(), 'targetAttribute' => ['id_basis_harga' => 'id']],
             [['id_kab_asal'], 'exist', 'skipOnError' => true, 'targetClass' => Kabupaten::className(), 'targetAttribute' => ['id_kab_asal' => 'id']],
@@ -109,6 +109,7 @@ class TravelerPosting extends \yii\db\ActiveRecord
             'day_departure' => 'Day Departure',
             'day_arrival' => 'Day Arrival',
             'id_barang' => 'Id Barang',
+            'barang' => 'Barang',
             'harga' => 'Harga',
             'id_basis_harga' => 'Basis Harga',
             'weight_price' => 'Weight Price',
